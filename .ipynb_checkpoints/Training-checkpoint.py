@@ -99,13 +99,12 @@ class RydbergDataset(InMemoryDataset):
         pass
 
 # -----------------------------------------------------------
-# PhysicalScaleAwareLoss (Single-Head)
+# PhysicalScaleAwareLoss 
 # -----------------------------------------------------------
 class PhysicalScaleAwareLoss(nn.Module):
-    def __init__(self, physics_weight=1.0, rel_weight=0., eps=1e-10):
+    def __init__(self, physics_weight=1.0, eps=1e-10):
         super().__init__()
         self.physics_weight = physics_weight
-        self.rel_weight = rel_weight
         self.eps = eps
 
     def get_entropy_bounds(self, system_size, subsystem_size):
