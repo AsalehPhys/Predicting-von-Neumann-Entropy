@@ -476,7 +476,6 @@ def main(rank, world_size):
     if rank == 0:
         logging.info("Training complete. Loading best model for final validation...")
         model.module.load_state_dict(torch.load(CONFIG['best_model_path'], map_location=device))
-        # model.eval() ensures BN layers use stored running stats
         model.eval()
         _ = evaluate(model, val_loader, criterion, device, rank, name='Final Validation')
 

@@ -28,12 +28,12 @@ CONFIG = {
     'processed_dir': './processed',
     'processed_file_name': 'data.pt',
     'random_seed': 42,
-    'chunk_size': 400,  # Size of chunks for parallel processing
-    'use_gpu': False,  # GPU conversion happens at the end
-    'save_interval': 150,  # Save intermediate results every 150 chunks
+    'chunk_size': 400,  
+    'use_gpu': False, 
+    'save_interval': 150,  
     'num_workers': min(mp.cpu_count() - 1, 40),
-    'batch_size': 5,  # Process 5 chunks at a time
-    'timeout': 600,  # 10-minute timeout per batch
+    'batch_size': 5,  
+    'timeout': 600,  
     'distance_cutoff': 6,
     'max_points_per_ny': {  
         1: 30000,  
