@@ -34,7 +34,6 @@ CONFIG = {
     'num_workers': min(mp.cpu_count() - 1, 40),
     'batch_size': 5,  
     'timeout': 600,  
-    'distance_cutoff': 6,
     'max_points_per_ny': {  
         1: 30000,  
         2: 60000,   
@@ -70,13 +69,12 @@ def calculate_quantum_correlations_optimized(state_indices, state_probs, N):
     
     return diag_correlations
 
-def create_edges_with_cutoff(positions, N):
+def create_edges(positions, N):
     edges = []
     for i in range(N):
         for j in range(i + 1, N):
             dist = np.linalg.norm(positions[i] - positions[j])
-            if dist <= CONFIG['distance_cutoff']:
-                edges.append([i, j])
+            edges.append([i, j])
     return np.array(edges, dtype=np.int64).T if edges else np.zeros((2, 0), dtype=np.int64)
 
 def process_single_row(row_data):
@@ -104,8 +102,8 @@ def process_single_row(row_data):
             mask  # Subsystem mask
         ], axis=1)
 
-        # Create edge connections based on distance cutoff
-        edge_index = create_edges_with_cutoff(positions, N)
+
+        edge_index = create_edges(positions, N)
 
         
         if edge_index.size > 0:

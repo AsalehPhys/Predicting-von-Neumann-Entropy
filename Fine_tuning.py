@@ -12,7 +12,7 @@ from Training import ExperimentalGNN, RydbergDataset, PhysicalScaleAwareLoss
 # Fine-tuning configuration
 FINETUNE_CONFIG = {
     'pretrained_model_path': 'best_model_rung1_6.pth',
-    'processed_dir_larger': './processed_experimentalrung7-8_10k_r6',
+    'processed_dir_larger': './processed_experimentalrung7-8_10k',
     'processed_file_name': 'data.pt',
     'batch_size': 128,
     'learning_rate': 0.5e-4,
@@ -63,7 +63,7 @@ def fine_tune_model():
     val_loader = DataLoader(val_dataset, batch_size=FINETUNE_CONFIG['batch_size'], shuffle=False)
 
     # Initialize loss and optimizer
-    criterion = PhysicalScaleAwareLoss(physics_weight=0.5)
+    criterion = PhysicalScaleAwareLoss()
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=FINETUNE_CONFIG['learning_rate'],

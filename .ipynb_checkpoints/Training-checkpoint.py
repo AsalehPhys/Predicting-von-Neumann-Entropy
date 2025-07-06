@@ -102,35 +102,17 @@ class RydbergDataset(InMemoryDataset):
 # PhysicalScaleAwareLoss 
 # -----------------------------------------------------------
 class PhysicalScaleAwareLoss(nn.Module):
-    def __init__(self, physics_weight=1.0, eps=1e-10):
+    def __init__(self, eps=1e-10):
         super().__init__()
-        self.physics_weight = physics_weight
         self.eps = eps
-
-    def get_entropy_bounds(self, system_size, subsystem_size):
-        lower_bound = torch.zeros_like(system_size, dtype=torch.float)
-        min_size = torch.minimum(subsystem_size.float(), 
-                                 (system_size - subsystem_size).float())
-        upper_bound = min_size * torch.log(torch.tensor(2.0, 
-                                             device=system_size.device))
-        return lower_bound, upper_bound
 
     def forward(self, pred_s, target_s, system_size, subsystem_size):
         error = pred_s - target_s
         logcosh = torch.log(torch.cosh(error + self.eps))
         logcosh_loss = logcosh.mean()
 
-        # Soft physics-based constraints
-        lower_bound, upper_bound = self.get_entropy_bounds(system_size, subsystem_size)
-        bounds_violation = (
-            torch.relu(lower_bound - pred_s) +
-            torch.relu(pred_s - upper_bound)
-        ).mean()
 
-        total_loss =  logcosh_loss + \
-                     self.physics_weight * bounds_violation
-
-        return total_loss
+        return logcosh_loss
 
 # -----------------------------------------------------------
 # GNN Model 
@@ -438,7 +420,7 @@ def main(rank, world_size):
 
     model = DDP(model, device_ids=[rank])
 
-    criterion = PhysicalScaleAwareLoss(physics_weight=0.5)
+    criterion = PhysicalScaleAwareLoss()
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=CONFIG['learning_rate'],
