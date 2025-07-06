@@ -73,7 +73,6 @@ def create_edges(positions, N):
     edges = []
     for i in range(N):
         for j in range(i + 1, N):
-            dist = np.linalg.norm(positions[i] - positions[j])
             edges.append([i, j])
     return np.array(edges, dtype=np.int64).T if edges else np.zeros((2, 0), dtype=np.int64)
 
