@@ -25,7 +25,7 @@ This work demonstrates that graph neural networks can predict entanglement entro
 | **Dataset size** | 1.24 million samples across system sizes |
 
 ![Prediction Accuracy](assets/entropy_heatmaps_diff.png)
-*Figure: Predicted vs. actual von Neumann entropy across system sizes (N=12).*
+*Figure: Predicted vs. actual von Neumann entropy across system size (N=12).*
 
 ## 🧠 Model Architecture
 
