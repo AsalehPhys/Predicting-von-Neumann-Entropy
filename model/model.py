@@ -25,6 +25,7 @@ from typing import Dict
 
 import torch
 import torch.nn as nn
+import torch_geometric
 from config import FEATURE_SCHEMA
 from torch_geometric.nn import BatchNorm, GINEConv, Set2Set, TransformerConv
 
